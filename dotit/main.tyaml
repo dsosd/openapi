@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
 	title: "tul::Dotit API"
-	version: 0.0.0.2020.144.63146
+	version: 0.0.0.2020.146.05460
 	#optional
 	description: "A TUL API that connects to Spotify"
 	contact:
@@ -106,6 +106,93 @@ paths:
 					schema:
 						type: boolean
 				-	$ref: "#/components/parameters/__api_version_query"
+	/track/{track}:
+		get:
+			responses:
+				"200":
+					description: "Server responded"
+					#optional
+					content:
+						application/json:
+							schema:
+								allOf:
+									-	oneOf:
+										-	$ref: "#/components/schemas/__regular_wrapper"
+										-	$ref: "#/components/schemas/__error_wrapper"
+									- $ref: "#/components/schemas/track_get"
+				"5XX":
+					description: "Server errored: 1%* of responses"
+			#optional
+			summary: "Get track"
+			description: "Get track info from the TUL-Spotify database."
+			parameters:
+				-	name: "track"
+					required: true
+					in: "path"
+					schema:
+						$ref: "#/components/schemas/uuid_t"
+				-	$ref: "#/components/parameters/__api_version_query"
+		post:
+			responses:
+				"200":
+					description: "Server responded"
+					#optional
+					content:
+						application/json:
+							schema:
+								allOf:
+									-	oneOf:
+										-	$ref: "#/components/schemas/__regular_wrapper"
+										-	$ref: "#/components/schemas/__error_wrapper"
+									- $ref: "#/components/schemas/track_post"
+				"5XX":
+					description: "Server errored: 1%* of responses"
+			#optional
+			summary: "Set track"
+			description: "Updates track's info in the TUL-Spotify database. If `overwrite` is `true`, info not specified will be set to their default values. If `{track}` is the null uuid, a new track is created instead."
+			parameters:
+				-	name: "track"
+					required: true
+					in: "path"
+					schema:
+						$ref: "#/components/schemas/uuid_t"
+				- name: "overwrite"
+					required: false
+					description: "Defaults to false"
+					in: "query"
+					schema:
+						type: boolean
+				-	$ref: "#/components/parameters/__api_version_query"
+			requestBody:
+				content:
+					application/json:
+						schema:
+							$ref: "#/components/schemas/track_post_body"
+		delete:
+			responses:
+				"200":
+					description: "Server responded"
+					#optional
+					content:
+						application/json:
+							schema:
+								allOf:
+									-	oneOf:
+										-	$ref: "#/components/schemas/__regular_wrapper"
+										-	$ref: "#/components/schemas/__error_wrapper"
+									- $ref: "#/components/schemas/track_delete"
+				"5XX":
+					description: "Server errored: 1%* of responses"
+			#optional
+			summary: "Delete track"
+			description: "Deletes a track permanently from the TUL-Spotify database."
+			parameters:
+				-	name: "track"
+					required: true
+					in: "path"
+					schema:
+						$ref: "#/components/schemas/uuid_t"
+				-	$ref: "#/components/parameters/__api_version_query"
 #optional
 servers:
 	-	url: "{SERVER_URL}"
@@ -172,6 +259,102 @@ components:
 				"payload": {
 				}
 			}
+		track_get:
+			type: object
+			properties:
+				payload:
+					type: object
+					properties:
+						canonical_name:
+							$ref: "#/components/schemas/str_t"
+						name:
+							$ref: "#/components/schemas/str_t"
+						locations:
+							type: array
+							items:
+								$ref: "#/components/schemas/uuid_t"
+						artists:
+							type: array
+							items:
+								$ref: "#/components/schemas/uuid_t"
+						featuring_artists:
+							type: array
+							items:
+								$ref: "#/components/schemas/uuid_t"
+						date:
+							$ref: "#/components/schemas/str_t"
+						tags:
+							type: array
+							items:
+								$ref: "#/components/schemas/uuid_t"
+			example: {
+				"payload": {
+					"canonical_name": "yellow_submarine",
+					"locations": [
+						"78e22971_c32f61f9_153eda3c_a5c803ad"
+					],
+					"artists": [
+						"c001caa9_f7ecc4bd_56dc8549_c2080ae0"
+					],
+					"featuring_artists": [],
+					"date": "1966-08-05",
+					"tags": [
+						"ce6c66f0_14d84e8b_4d0a556b_2d6eb296",
+						"8bae3588_d1041c8f_5ae4d1c3_c4fef96b"
+					]
+				}
+			}
+		track_post:
+			type: object
+			properties:
+				payload:
+					type: object
+					properties:
+						uuid:
+							$ref: "#/components/schemas/uuid_t"
+			example: {
+				"payload": {
+					"uuid": "4d836e28_1446ae1a_758c3ab6_886c3785"
+				}
+			}
+		track_post_body:
+			type: object
+			properties:
+				canonical_name:
+					$ref: "#/components/schemas/str_t"
+				name:
+					$ref: "#/components/schemas/str_t"
+				locations:
+					type: array
+					items:
+						$ref: "#/components/schemas/uuid_t"
+				artists:
+					type: array
+					items:
+						$ref: "#/components/schemas/uuid_t"
+				featuring_artists:
+					type: array
+					items:
+						$ref: "#/components/schemas/uuid_t"
+				date:
+					$ref: "#/components/schemas/str_t"
+				tags:
+					type: array
+					items:
+						$ref: "#/components/schemas/uuid_t"
+			example: {
+				"canonical_name": "yellow_submarine",
+				"date": "1966-08-05"
+			}
+		track_delete:
+			type: object
+			properties:
+				payload:
+					$ref: "#/components/schemas/null_t"
+			example: {
+				"payload": {
+				}
+			}
 		#for placeholding purposes only
 		__sample_get:
 			type: object
@@ -230,12 +413,10 @@ components:
 					maxItems: 0
 					items:
 						type: integer
-				severity:
-					type: integer
 				message:
 					$ref: "#/components/schemas/str_t"
 			example: {
-				"severity": 0,
+				"errors": [],
 				"message": "No errors."
 			}
 		#at least one error metadata
@@ -260,10 +441,11 @@ components:
 		null_t:
 			type: boolean
 			nullable: true
+			description: "Nothing useful here, just to satisfy OpenAPI requirements"
 		str_t:
 			type: string
 			format: string
-			description: Generic string
+			description: "Generic string"
 			example: "Foo bar"
 		uuid_t:
 			type: string
