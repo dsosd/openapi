@@ -1,0 +1,87 @@
+/track/{track}:
+	get:
+		responses:
+			"200":
+				description: "Server responded"
+				#optional
+				content:
+					application/json:
+						schema:
+							allOf:
+								-	oneOf:
+									-	$ref: "#/components/schemas/__regular_wrapper"
+									-	$ref: "#/components/schemas/__error_wrapper"
+								- $ref: "#/components/schemas/track_get"
+			"5XX":
+				description: "Server errored: 1%* of responses"
+		#optional
+		summary: "Get track"
+		description: "Get track info from the TUL-Spotify database."
+		parameters:
+			-	name: "track"
+				required: true
+				in: "path"
+				schema:
+					$ref: "#/components/schemas/uuid_t"
+			-	$ref: "#/components/parameters/__api_version_query"
+	post:
+		responses:
+			"200":
+				description: "Server responded"
+				#optional
+				content:
+					application/json:
+						schema:
+							allOf:
+								-	oneOf:
+									-	$ref: "#/components/schemas/__regular_wrapper"
+									-	$ref: "#/components/schemas/__error_wrapper"
+								- $ref: "#/components/schemas/track_post"
+			"5XX":
+				description: "Server errored: 1%* of responses"
+		#optional
+		summary: "Set track"
+		description: "Updates track's info in the TUL-Spotify database. If `overwrite` is `true`, info not specified will be set to their default values. If `{track}` is the null uuid, a new track is created instead."
+		parameters:
+			-	name: "track"
+				required: true
+				in: "path"
+				schema:
+					$ref: "#/components/schemas/uuid_t"
+			- name: "overwrite"
+				required: false
+				description: "Defaults to false"
+				in: "query"
+				schema:
+					type: boolean
+			-	$ref: "#/components/parameters/__api_version_query"
+		requestBody:
+			content:
+				application/json:
+					schema:
+						$ref: "#/components/schemas/track_post_body"
+	delete:
+		responses:
+			"200":
+				description: "Server responded"
+				#optional
+				content:
+					application/json:
+						schema:
+							allOf:
+								-	oneOf:
+									-	$ref: "#/components/schemas/__regular_wrapper"
+									-	$ref: "#/components/schemas/__error_wrapper"
+								- $ref: "#/components/schemas/track_delete"
+			"5XX":
+				description: "Server errored: 1%* of responses"
+		#optional
+		summary: "Delete track"
+		description: "Deletes a track permanently from the TUL-Spotify database."
+		parameters:
+			-	name: "track"
+				required: true
+				in: "path"
+				schema:
+					$ref: "#/components/schemas/uuid_t"
+			-	$ref: "#/components/parameters/__api_version_query"

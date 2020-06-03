@@ -1,0 +1,34 @@
+#no error metadata
+__regular_wrapper:
+	type: object
+	description: "No errors occurred"
+	properties:
+		errors:
+			type: array
+			maxItems: 0
+			items:
+				type: integer
+		message:
+			$ref: "#/components/schemas/str_t"
+	example: {
+		"errors": [],
+		"message": "No errors."
+	}
+#at least one error metadata
+__error_wrapper:
+	type: object
+	description: "At least one error occurred"
+	properties:
+		errors:
+			type: array
+			items:
+				type: integer
+		severity:
+			type: integer
+		message:
+			$ref: "#/components/schemas/str_t"
+	example: {
+		"errors": [33, 6],
+		"severity": 4,
+		"message": "Parameter `id` is invalid."
+	}
