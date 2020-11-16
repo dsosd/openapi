@@ -1,0 +1,103 @@
+`resp@mdef: schema
+responses:
+	"200":
+		description: "Normal response - no errors"
+		#optional
+		content:
+			application/json:
+				schema:
+					allOf:
+						-	$ref: "#/components/schemas/__regular_wrapper"
+						-	$ref: "#/components/schemas/{schema}"
+	"400":
+		description: "Abnormal response - at least one error"
+		#optional
+		content:
+			application/json:
+				schema:
+					allOf:
+						-	$ref: "#/components/schemas/__error_wrapper"
+						-	$ref: "#/components/schemas/{schema}"
+	"5XX":
+		description: "Unexpected server failure"
+
+/playlist/{playlist}:
+	get:
+		`resp@mex: playlist_get
+		#optional
+		summary: "Get playlist"
+		description: "Get playlist's tracks' ids"
+		parameters:
+			-	name: "playlist"
+				required: true
+				in: "path"
+				schema:
+					$ref: "#/components/schemas/uuid_t"
+			-	$ref: "#/components/parameters/__api_version_query"
+	post:
+		responses:
+			"200":
+				description: "Server responded"
+				#optional
+				content:
+					application/json:
+						schema:
+							allOf:
+								-	oneOf:
+									-	$ref: "#/components/schemas/__regular_wrapper"
+									-	$ref: "#/components/schemas/__error_wrapper"
+								- $ref: "#/components/schemas/playlist_post"
+			"5XX":
+				description: "Server errored: 1%* of responses"
+		#optional
+		summary: "Set playlist"
+		description: "Updates playlist's tracks. If `overwrite` is `true`, all tracks not specified are deleted. If `{playlist}` is the null uuid, a new playlist is created instead."
+		parameters:
+			-	name: "playlist"
+				required: true
+				in: "path"
+				schema:
+					$ref: "#/components/schemas/uuid_t"
+			- name: "overwrite"
+				required: false
+				description: "Defaults to false"
+				in: "query"
+				schema:
+					type: boolean
+			-	$ref: "#/components/parameters/__api_version_query"
+		requestBody:
+			content:
+				application/json:
+					schema:
+						$ref: "#/components/schemas/playlist_post_body"
+	delete:
+		responses:
+			"200":
+				description: "Server responded"
+				#optional
+				content:
+					application/json:
+						schema:
+							allOf:
+								-	oneOf:
+									-	$ref: "#/components/schemas/__regular_wrapper"
+									-	$ref: "#/components/schemas/__error_wrapper"
+								- $ref: "#/components/schemas/playlist_delete"
+			"5XX":
+				description: "Server errored: 1%* of responses"
+		#optional
+		summary: "Delete playlist"
+		description: "Deletes a playlist permanently*. If `force` is `true`, the playlist will be obliterated.\n\n\\* The playlist is still recoverable via the Spotify UI."
+		parameters:
+			-	name: "playlist"
+				required: true
+				in: "path"
+				schema:
+					$ref: "#/components/schemas/uuid_t"
+			-	name: "force"
+				required: false
+				description: "Defaults to false"
+				in: "query"
+				schema:
+					type: boolean
+			-	$ref: "#/components/parameters/__api_version_query"

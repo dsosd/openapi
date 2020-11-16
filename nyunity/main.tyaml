@@ -1,0 +1,56 @@
+openapi: 3.0.3
+info:
+	title: "NYUnity API"
+	version: 0.0.0.2020.000.00000
+	#optional
+	description: "An API for NYUnity"
+	contact:
+		#optional
+		name: "nyunityteam@gmail.com"
+	license:
+		name: "All rights reserved"
+paths:
+	`@inject:playlist.tyaml
+	`@inject:track.tyaml
+#optional
+servers:
+	-	url: "https://api.dsosd.org/nyunity"
+		description: "Current server"
+components:
+	parameters:
+		__api_version_query:
+			name: "__version"
+			required: false
+			in: "query"
+			schema:
+				$ref: "#/components/schemas/version_t"
+	schemas:
+		`@inject:schema/playlist.tyaml
+		`@inject:schema/track.tyaml
+		`@inject:schema/__sample.tyaml
+		`@inject:schema/__wrappers.tyaml
+		`@inject:schema/__types.tyaml
+	securitySchemes:
+		header_id:
+			type: "apiKey"
+			name: "tul_uuid"
+			in: "header"
+		header_key:
+			type: "apiKey"
+			name: "tul_secret_key"
+			in: "header"
+		cookie_id:
+			type: "apiKey"
+			name: "_uuid"
+			in: "cookie"
+		cookie_key:
+			type: "apiKey"
+			name: "_SECRET_key_DO_NOT_SHARE"
+			in: "cookie"
+security:
+	-	headers: []
+	-	cookies: []
+externalDocs:
+	url: "https://github.com/dsosd/openapi/"
+	#optional
+	description: "For more info"

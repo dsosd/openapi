@@ -1,0 +1,20 @@
+#types
+null_t:
+	type: boolean
+	nullable: true
+	description: "Nothing useful here, just to satisfy OpenAPI requirements"
+str_t:
+	type: string
+	format: string
+	description: "Generic string"
+	example: "Foo bar"
+uuid_t:
+	type: string
+	format: uuid
+	description: "128-bit UUID"
+	example: "c5982406_f1267d57_2069db81_8934d14e"
+version_t:
+	type: string
+	format: version
+	description: "Version in format `major.minor.patch.year.day.second`"
+	example: "0.0.0.2020.143.71260"

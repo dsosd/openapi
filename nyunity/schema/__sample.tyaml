@@ -1,0 +1,48 @@
+#for placeholding purposes only
+__sample_get:
+	type: object
+	properties:
+		payload:
+			type: object
+			properties:
+				"...":
+					$ref: "#/components/schemas/str_t"
+	example: {
+		"payload": {
+			"...": "Get request response placeholder..."
+		}
+	}
+__sample_post:
+	type: object
+	properties:
+		payload:
+			type: object
+			properties:
+				"...":
+					$ref: "#/components/schemas/str_t"
+	example: {
+		"payload": {
+			"...": "Post request response placeholder..."
+		}
+	}
+__sample_post_body:
+	type: object
+	properties:
+		"...":
+			$ref: "#/components/schemas/str_t"
+	example: {
+		"...": "Post request body placeholder..."
+	}
+__sample_delete:
+	type: object
+	properties:
+		payload:
+			type: object
+			properties:
+				"...":
+					$ref: "#/components/schemas/str_t"
+	example: {
+		"payload": {
+			"...": "Delete request response placeholder..."
+		}
+	}

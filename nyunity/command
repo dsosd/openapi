@@ -1,0 +1,1 @@
+python3 ~/shim/tul/docs/openapi_tyaml/preprocess_tyaml.py main.tyaml temp.tyaml; ~/shim/tul/docs/openapi_tyaml/convert_tyaml_to_yaml.sh temp
