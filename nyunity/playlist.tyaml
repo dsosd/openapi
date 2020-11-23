@@ -25,7 +25,7 @@ responses:
 	get:
 		`resp@mex: login_anon_get
 		#optional
-		summary: "Get anonymous token keypair - for apps"
+		summary: "Get anonymous token keypair - for app"
 		description: "Retrieve the least privileged account tokens"
 		security: []
 		parameters:
@@ -51,8 +51,8 @@ responses:
 	post:
 		`resp@mex: login_dev_post
 		#optional
-		summary: "Launch developer auth flow"
-		description: "Start the developer authentication flow with the current tokens"
+		summary: "Launch developer auth flow - (app/web differences)"
+		description: "Start the developer authentication flow with the current tokens If authenticating by cookies, the payload will be modified with a cookie `_new_uuid` replacing `new_uuid`."
 		parameters:
 			-	$ref: "#/components/parameters/__api_version_query"
 		requestBody:
@@ -65,8 +65,9 @@ responses:
 	post:
 		`resp@mex: login_google_post
 		#optional
-		summary: "Launch Google OAuth flow"
-		description: "Start the Google OAuth flow with the current tokens"
+		summary: "Launch Google OAuth flow - (app/web differences)"
+		description: "Start the Google OAuth flow with the current tokens. If authenticating by cookies, the payload will be modified with a cookie `_new_uuid` replacing `new_uuid`."
+		
 		parameters:
 			-	$ref: "#/components/parameters/__api_version_query"
 		requestBody:
@@ -79,22 +80,8 @@ responses:
 	post:
 		`resp@mex: oauth_confirm_post
 		#optional
-		summary: "Trade current login tokens for new ones - for apps"
-		description: "Invalidates your current tokens and returns the secret key for the new tokens"
-		parameters:
-			-	$ref: "#/components/parameters/__api_version_query"
-		requestBody:
-			content:
-				application/json:
-					schema:
-						$ref: "#/components/schemas/oauth_confirm_post_body"
-
-/oauth/confirm/:
-	post:
-		`resp@mex: oauth_confirm_2_post
-		#optional
-		summary: "Trade current login tokens for new ones - for web"
-		description: "Invalidates your current tokens and returns the secret key for the new tokens as a cookie"
+		summary: "Trade current login tokens for new ones - (app/web differences)"
+		description: "Invalidates your current tokens and returns the secret key for the new tokens. If authenticating by cookies, the payload will be modified with a cookie `_SECRET_key_DO_NOT_SHARE` replacing `tul_secret_key`."
 		parameters:
 			-	$ref: "#/components/parameters/__api_version_query"
 		requestBody:

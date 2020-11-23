@@ -87,19 +87,6 @@ oauth_confirm_post:
 			"tul_secret_key": "96ac2dab965a5cd186d5434003613c4b4cff7e5689f51b3bdd57cc10452671779009219561e3501d31a85c53bc0fa1d8a244d63c92e26c3a0ac0fac4f59a2dd8"
 		}
 	}
-oauth_confirm_2_post:
-	type: object
-	properties:
-		cookies:
-			type: object
-			properties:
-				_SECRET_key_DO_NOT_SHARE:
-					$ref: "#/components/schemas/str_t"
-	example: {
-		"cookies": {
-			"_SECRET_key_DO_NOT_SHARE": "96ac2dab965a5cd186d5434003613c4b4cff7e5689f51b3bdd57cc10452671779009219561e3501d31a85c53bc0fa1d8a244d63c92e26c3a0ac0fac4f59a2dd8"
-		}
-	}
 oauth_confirm_post_body:
 	type: object
 	properties: {
