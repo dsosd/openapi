@@ -1,20 +1,10 @@
-playlist_get:
+login_anon_get:
 	type: object
 	properties:
 		payload:
-			type: object
-			properties:
-				tracks:
-					type: array
-					items:
-						$ref: "#/components/schemas/uuid_t"
+			$ref: "#/components/schemas/null_t"
 	example: {
 		"payload": {
-			"tracks": [
-				"c6f8bb90_fb703bbc_e32b715a_94627ba0",
-				"564284cc_b9baacc7_833ba9b5_d7b3eab6",
-				"b33ae42d_165be04e_b2036327_61ec69d0"
-			]
 		}
 	}
 playlist_post:

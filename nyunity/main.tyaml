@@ -48,8 +48,10 @@ components:
 			name: "_SECRET_key_DO_NOT_SHARE"
 			in: "cookie"
 security:
-	-	headers: []
-	-	cookies: []
+	-	header_id: []
+		header_key: []
+	-	cookie_id: []
+		cookie_key: []
 externalDocs:
 	url: "https://github.com/dsosd/openapi/"
 	#optional

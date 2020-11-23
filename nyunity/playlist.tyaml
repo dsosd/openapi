@@ -21,43 +21,23 @@ responses:
 	"5XX":
 		description: "Unexpected server failure"
 
-/playlist/{playlist}:
+/login/anon:
 	get:
-		`resp@mex: playlist_get
+		`resp@mex: login_anon_get
 		#optional
-		summary: "Get playlist"
-		description: "Get playlist's tracks' ids"
+		summary: "Get anonymous token keypair"
+		description: "Retrieve the least privileged account tokens"
+		security: []
 		parameters:
-			-	name: "playlist"
-				required: true
-				in: "path"
-				schema:
-					$ref: "#/components/schemas/uuid_t"
 			-	$ref: "#/components/parameters/__api_version_query"
+
+/login/google:
 	post:
-		responses:
-			"200":
-				description: "Server responded"
-				#optional
-				content:
-					application/json:
-						schema:
-							allOf:
-								-	oneOf:
-									-	$ref: "#/components/schemas/__regular_wrapper"
-									-	$ref: "#/components/schemas/__error_wrapper"
-								- $ref: "#/components/schemas/playlist_post"
-			"5XX":
-				description: "Server errored: 1%* of responses"
+		`resp@mex: playlist_post
 		#optional
-		summary: "Set playlist"
-		description: "Updates playlist's tracks. If `overwrite` is `true`, all tracks not specified are deleted. If `{playlist}` is the null uuid, a new playlist is created instead."
+		summary: "Launch Google OAuth flow"
+		description: ""
 		parameters:
-			-	name: "playlist"
-				required: true
-				in: "path"
-				schema:
-					$ref: "#/components/schemas/uuid_t"
 			- name: "overwrite"
 				required: false
 				description: "Defaults to false"
@@ -71,29 +51,11 @@ responses:
 					schema:
 						$ref: "#/components/schemas/playlist_post_body"
 	delete:
-		responses:
-			"200":
-				description: "Server responded"
-				#optional
-				content:
-					application/json:
-						schema:
-							allOf:
-								-	oneOf:
-									-	$ref: "#/components/schemas/__regular_wrapper"
-									-	$ref: "#/components/schemas/__error_wrapper"
-								- $ref: "#/components/schemas/playlist_delete"
-			"5XX":
-				description: "Server errored: 1%* of responses"
+		`resp@mex: playlist_delete
 		#optional
-		summary: "Delete playlist"
-		description: "Deletes a playlist permanently*. If `force` is `true`, the playlist will be obliterated.\n\n\\* The playlist is still recoverable via the Spotify UI."
+		summary: ""
+		description: ""
 		parameters:
-			-	name: "playlist"
-				required: true
-				in: "path"
-				schema:
-					$ref: "#/components/schemas/uuid_t"
 			-	name: "force"
 				required: false
 				description: "Defaults to false"
