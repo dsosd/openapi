@@ -25,41 +25,66 @@ responses:
 	get:
 		`resp@mex: login_anon_get
 		#optional
-		summary: "Get anonymous token keypair"
+		summary: "Get anonymous token keypair - for apps"
 		description: "Retrieve the least privileged account tokens"
+		security: []
+		parameters:
+			-	name: "force_json"
+				description: "Must be true"
+				required: true
+				in: "query"
+				schema:
+					$ref: "#/components/schemas/bool_t"
+			-	$ref: "#/components/parameters/__api_version_query"
+
+/login/anon/:
+	get:
+		`resp@mex: login_anon_2_get
+		#optional
+		summary: "Get anonymous token keypair - for web"
+		description: "Retrieve the least privileged account tokens as cookies"
 		security: []
 		parameters:
 			-	$ref: "#/components/parameters/__api_version_query"
 
-/login/google:
+/login/dev:
 	post:
-		`resp@mex: playlist_post
+		`resp@mex: login_dev_post
 		#optional
-		summary: "Launch Google OAuth flow"
-		description: ""
+		summary: "Launch developer auth flow"
+		description: "Start the developer authentication flow with the current tokens"
 		parameters:
-			- name: "overwrite"
-				required: false
-				description: "Defaults to false"
-				in: "query"
-				schema:
-					type: boolean
 			-	$ref: "#/components/parameters/__api_version_query"
 		requestBody:
 			content:
 				application/json:
 					schema:
-						$ref: "#/components/schemas/playlist_post_body"
-	delete:
-		`resp@mex: playlist_delete
+						$ref: "#/components/schemas/login_dev_post_body"
+
+/login/google:
+	post:
+		`resp@mex: login_google_post
 		#optional
-		summary: ""
-		description: ""
+		summary: "Launch Google OAuth flow"
+		description: "Start the Google OAuth flow with the current tokens"
 		parameters:
-			-	name: "force"
-				required: false
-				description: "Defaults to false"
-				in: "query"
-				schema:
-					type: boolean
 			-	$ref: "#/components/parameters/__api_version_query"
+		requestBody:
+			content:
+				application/json:
+					schema:
+						$ref: "#/components/schemas/login_google_post_body"
+
+/oauth/confirm:
+	post:
+		`resp@mex: oauth_confirm_post
+		#optional
+		summary: "Trade current login tokens for new ones"
+		description: "Invalidates your current tokens and returns the secret key for the new tokens"
+		parameters:
+			-	$ref: "#/components/parameters/__api_version_query"
+		requestBody:
+			content:
+				application/json:
+					schema:
+						$ref: "#/components/schemas/oauth_confirm_post_body"

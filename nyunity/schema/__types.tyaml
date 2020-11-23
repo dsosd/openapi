@@ -3,11 +3,20 @@ null_t:
 	type: boolean
 	nullable: true
 	description: "Nothing useful here, just to satisfy OpenAPI requirements"
+bool_t:
+	type: boolean
+	description: "Boolean value"
+	example: "true"
 str_t:
 	type: string
 	format: string
 	description: "Generic string"
 	example: "Foo bar"
+url_t:
+	type: string
+	format: url
+	description: "Generic URL"
+	example: "https://one.one.one.one"
 uuid_t:
 	type: string
 	format: uuid
